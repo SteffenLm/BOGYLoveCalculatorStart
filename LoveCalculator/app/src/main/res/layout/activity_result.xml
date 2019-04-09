@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
+    tools:context=".ResultActivity">
+
+    <TextView
+        android:id="@+id/textViewResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:textAlignment="center"
+        android:textSize="28sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewSmiley"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewResult" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/textViewImpressumOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Made with"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/imageViewImpressumTwo"
+            android:layout_width="48dip"
+            android:layout_height="48dip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewImpressumOne"
+            app:srcCompat="@drawable/smiley_1" />
+
+        <TextView
+            android:id="@+id/textViewImpressumThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="by Steffen and "
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imageViewImpressumTwo" />
+
+        <ImageView
+            android:id="@+id/imageViewImpressumFour"
+            android:layout_width="48dip"
+            android:layout_height="48dip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewImpressumThree"
+            app:srcCompat="@drawable/smiley_5" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

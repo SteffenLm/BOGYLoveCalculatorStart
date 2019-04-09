@@ -1,8 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginLeft="10dp"
     tools:context=".MainActivity">
 
+    <TextView
+        android:id="@+id/textViewSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minWidth="180dp"
+        android:text="Größe der jeweiligen Personen"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextSizeOne"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextSizeOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:maxLength="3"
+        android:minWidth="150dp"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSize" />
+
+    <TextView
+        android:id="@+id/textViewSizeOneUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:text="cm"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSizeOne"
+        app:layout_constraintLeft_toRightOf="@+id/editTextSizeOne" />
+
+    <EditText
+        android:id="@+id/editTextSizeTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:inputType="number"
+        android:maxLength="3"
+        android:minWidth="150dp"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@+id/textViewSizeOneUnit"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSize" />
+
+    <TextView
+        android:id="@+id/textViewSizeTwoUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:text="cm"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextSizeOne"
+        app:layout_constraintLeft_toRightOf="@+id/editTextSizeTwo" />
+
+    <TextView
+        android:id="@+id/textViewEye"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minWidth="180dp"
+        android:text="Augenfarbe der jeweiligen Personen"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/editTextSizeOne"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSizeOne" />
+
+    <Spinner
+        android:id="@+id/spinnerEyeOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:minWidth="170dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEye" />
+
+    <Spinner
+        android:id="@+id/spinnerEyeTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:minWidth="170dp"
+        app:layout_constraintLeft_toRightOf="@id/spinnerEyeOne"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEye" />
+
+    <TextView
+        android:id="@+id/textViewHair"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:minWidth="180dp"
+        android:text="Haarfarbe der jeweiligen Personen"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerEyeOne" />
+
+    <EditText
+        android:id="@+id/editTextHairOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="13"
+        android:minWidth="170dp"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHair" />
+
+    <EditText
+        android:id="@+id/editTextHairTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="13"
+        android:minWidth="170dp"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toRightOf="@id/editTextHairOne"
+        app:layout_constraintTop_toBottomOf="@+id/textViewHair" />
+
+    <Button
+        android:id="@+id/btnReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHairOne" />
+
+    <Button
+        android:id="@+id/btnCalculateLove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Love it"
+        app:layout_constraintLeft_toRightOf="@+id/btnReset"
+        app:layout_constraintTop_toBottomOf="@+id/editTextHairOne" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/textViewImpressumOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Made with"
+            android:textSize="24sp" />
+
+        <ImageView
+            android:id="@+id/imageViewImpressumTwo"
+            android:layout_width="48dip"
+            android:layout_height="48dip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewImpressumOne"
+            app:srcCompat="@drawable/smiley_1" />
+
+        <TextView
+            android:id="@+id/textViewImpressumThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="by Steffen and "
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/imageViewImpressumTwo" />
+
+        <ImageView
+            android:id="@+id/imageViewImpressumFour"
+            android:layout_width="48dip"
+            android:layout_height="48dip"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/textViewImpressumThree"
+            app:srcCompat="@drawable/smiley_5" />
+    </LinearLayout>
 </android.support.constraint.ConstraintLayout>

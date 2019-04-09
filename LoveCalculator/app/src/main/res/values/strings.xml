@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">LoveCalculator</string>
+    <string-array name="eye_colors_array">
+        <item>Braun</item>
+        <item>Grau</item>
+        <item>Blau</item>
+        <item>Grün</item>
+    </string-array>
 </resources>
