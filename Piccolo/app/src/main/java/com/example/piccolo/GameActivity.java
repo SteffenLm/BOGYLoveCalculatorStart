@@ -45,13 +45,18 @@ public class GameActivity extends AppCompatActivity {
         if (rand.nextBoolean()) {
             //questionall
             int randomQuestionNumber = rand.nextInt(this.questionAll.size());
-            return this.questionAll.get(randomQuestionNumber);
+            String randomQuestion = this.questionAll.get(randomQuestionNumber);
+            this.questionAll.remove(randomQuestionNumber);
+            return randomQuestion;
         } else {
-            //question player
+            //randomQuestion player
             int randomQuestionNumber = rand.nextInt(this.questionPlayer.size());
             String randomQuestion = this.questionPlayer.get(randomQuestionNumber);
+            this.questionPlayer.remove(randomQuestionNumber);
+            //player
             int randomPlayerNumber = rand.nextInt(this.players.size());
             String randomPlayer = this.players.get(randomPlayerNumber);
+
             return randomPlayer + randomQuestion;
         }
     }

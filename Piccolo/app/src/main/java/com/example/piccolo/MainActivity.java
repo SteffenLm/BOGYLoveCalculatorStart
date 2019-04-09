@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -27,8 +28,13 @@ public class MainActivity extends AppCompatActivity {
     public void startGame(View view) {
         Intent intent = new Intent(MainActivity.this, GameActivity.class);
         this.loadPlayerNames();
-        intent.putExtra(MainActivity.PLAYERS, this.players);
-        startActivity(intent);
+        if (this.players.size() >= 2) {
+            intent.putExtra(MainActivity.PLAYERS, this.players);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "Du Dackel zu zweit sollte man Saufen nicht allein du Opfah", Toast.LENGTH_LONG ).show();
+        }
+
     }
 
     private void loadControls() {
