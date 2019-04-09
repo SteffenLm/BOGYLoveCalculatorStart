@@ -131,8 +131,6 @@ tools:context=".MainActivity">
             tools:layout_conversion_absoluteHeight="19dp"
             tools:layout_conversion_absoluteWidth="207dp" />
 
-
-
         <Button
             android:id="@+id/funButton"
             android:layout_width="wrap_content"
