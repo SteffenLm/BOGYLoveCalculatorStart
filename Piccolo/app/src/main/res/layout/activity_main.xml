@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:maxHeight="730dp"
+tools:context=".MainActivity">
+
+<ScrollView
+    android:id="@+id/scrollView"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+    android:scrollbarStyle="insideInset"
+    android:visibility="visible"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.0"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.0">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:isScrollContainer="true"
+        android:orientation="vertical"
+        android:overScrollMode="ifContentScrolls"
+        android:scrollbars="vertical"
+        android:visibility="visible">
+
+        <EditText
+            android:id="@+id/inputNameOne"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/inputName1"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            tools:layout_conversion_absoluteHeight="45dp"
+            tools:layout_conversion_absoluteWidth="213dp" />
+
+        <EditText
+            android:id="@+id/inputNameTwo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/inputName2"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputNameOne"
+            tools:layout_conversion_absoluteHeight="45dp"
+            tools:layout_conversion_absoluteWidth="213dp" />
+
+        <EditText
+            android:id="@+id/inputNameThree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/inputName3"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputNameTwo" />
+
+        <EditText
+            android:id="@+id/inputNameFour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/inputName4"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputNameThree" />
+
+        <EditText
+            android:id="@+id/inputNameFive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="24dp"
+            android:ems="10"
+            android:hint="@string/inputName5"
+            android:inputType="textPersonName"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputNameFour" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="250dp"
+            android:layout_height="86dp"
+            android:layout_marginStart="60dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="@string/textView"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_conversion_absoluteHeight="19dp"
+            tools:layout_conversion_absoluteWidth="207dp" />
+
+
+
+        <Button
+            android:id="@+id/funButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:layout_marginLeft="96dp"
+            android:layout_marginTop="32dp"
+            android:baselineAligned="false"
+            android:text="@string/buttonGo"
+            android:textSize="20sp"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:theme="@style/AppTheme.Button"
+            android:background="@drawable/rounded_corners_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/inputNameFive"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_conversion_absoluteWidth="176dp"
+            android:onClick="startGame"/>
+
+
+
+        <TextView
+            android:id="@+id/footerPart01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginLeft="36dp"
+            android:layout_marginTop="32dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:text="@string/footerInfo"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/funButton" />
+
+        <ImageView
+            android:id="@+id/footerPart02"
+            android:layout_width="33dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/lovePicDesc"
+            android:paddingTop="3dp"
+            app:layout_constraintStart_toEndOf="@+id/footerPart01"
+            app:layout_constraintTop_toBottomOf="@+id/funButton"
+            app:srcCompat="@drawable/heart_comic_icon" />
+
+        <TextView
+            android:id="@+id/footerPart03"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="32dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="5dp"
+            android:text="@string/footerInfo2_Name"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/footerPart02"
+            app:layout_constraintTop_toBottomOf="@+id/funButton" />
+
+
+
+        <ImageView
+            android:id="@+id/footerPart04"
+            android:layout_width="44dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/sapPicDesc"
+            android:paddingTop="3dp"
+            app:layout_constraintStart_toEndOf="@+id/footerPart03"
+            app:layout_constraintTop_toBottomOf="@+id/funButton"
+            app:srcCompat="@drawable/sap_logo" />
+
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
+
+</android.support.constraint.ConstraintLayout>

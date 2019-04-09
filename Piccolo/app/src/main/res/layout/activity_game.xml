@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/footerPart08"
+        android:layout_width="44dp"
+        android:layout_height="34dp"
+        android:layout_below="@+id/viewGameTask"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="64dp"
+        android:layout_toEndOf="@+id/footerPart07"
+        android:layout_toRightOf="@+id/footerPart07"
+        android:contentDescription="@string/sapPicDesc"
+        android:paddingLeft="2dp"
+        android:paddingTop="3dp"
+        app:layout_constraintStart_toEndOf="@+id/footerPart07"
+        app:layout_constraintTop_toBottomOf="@+id/viewGameTask"
+        app:srcCompat="@drawable/sap_logo" />
+
+    <TextView
+        android:id="@+id/footerPart07"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewGameTask"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="64dp"
+        android:layout_toEndOf="@+id/footerPart06"
+        android:layout_toRightOf="@+id/footerPart06"
+        android:paddingTop="2dp"
+        android:paddingBottom="5dp"
+        android:text="@string/footerInfo2_Name"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/footerPart06"
+        app:layout_constraintTop_toBottomOf="@+id/viewGameTask" />
+
+    <ImageView
+        android:id="@+id/footerPart06"
+        android:layout_width="35dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/viewGameTask"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="64dp"
+        android:layout_toEndOf="@+id/footerPart05"
+        android:layout_toRightOf="@+id/footerPart05"
+        android:contentDescription="@string/lovePicDesc"
+        android:paddingTop="3dp"
+        app:layout_constraintStart_toEndOf="@+id/footerPart05"
+        app:layout_constraintTop_toBottomOf="@+id/viewGameTask"
+        app:srcCompat="@drawable/heart_comic_icon" />
+
+    <TextView
+        android:id="@+id/footerPart05"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewGameTask"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="64dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="5dp"
+        android:text="@string/footerInfo"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewGameTask" />
+
+    <TextView
+        android:id="@+id/viewGameTask"
+        android:layout_width="614dp"
+        android:layout_height="199dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="16dp"
+        android:gravity="start"
+        android:text="@string/textViewTest"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/nextTextButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="120dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/viewGameTask"
+        android:layout_marginStart="196dp"
+        android:layout_marginLeft="196dp"
+        android:layout_marginTop="60dp"
+        android:layout_toEndOf="@+id/footerPart08"
+        android:layout_toRightOf="@+id/footerPart08"
+        android:background="@drawable/rounded_corners_button"
+        android:onClick="backToMain"
+        android:text="@string/buttonNextText"
+        android:textSize="20sp"
+        android:theme="@style/AppTheme.Button"
+        app:layout_constraintStart_toEndOf="@+id/footerPart08"
+        app:layout_constraintTop_toBottomOf="@+id/viewGameTask" />
+
+</android.support.constraint.ConstraintLayout>
