@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Piccolo by Mirco</string>
+    <string name="textView">Welcome to Mirco\'s Piccolo game!</string>
+    <string name="textViewTest">Jeder der schon einmal nach dem Feiern kopfweh
+        hatte trinkt 5 Schlücke auf den Kopfweh der wieder kommen könnte!</string>
+
+    <string name="inputName1">first Name</string>
+    <string name="inputName2">second Name</string>
+    <string name="inputName3">third Name</string>
+    <string name="inputName4">fourth Name</string>
+    <string name="inputName5">fifth Name</string>
+
+    <string name="footerInfo">Made with</string>
+    <string name="footerInfo2_Name">by Mirco and</string>
+
+    <string name="lovePicDesc">love</string>
+    <string name="sapPicDesc">SAP</string>
+
+    <string name="buttonGo">Let\'s have fun!</string>
+    <string name="buttonNextText">Next</string>
+</resources>
