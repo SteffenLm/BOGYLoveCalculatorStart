@@ -31,7 +31,8 @@ public class GameActivity extends AppCompatActivity {
         this.loadData();
         this.loadQuestionPerson();
         this.loadQuestionsAll();
-        this.textViewQuestion.setText(this.getRandomQuestion());
+        this.textViewQuestion.setText("VORSICHT!" + "\n \n" + "Übermäßigter Alkoholkonsum ist schädlich für den Körper! Trinkt verantwortungsbewusst." + "\n \n" + " - Eure Piccolo-Game-Programmierer.");
+        this.textViewQuestion.setTextColor(this.getResources().getColor(R.color.warningInitalColor));
     }
 
     private void loadData() {
@@ -61,10 +62,11 @@ public class GameActivity extends AppCompatActivity {
         }
     }
     private void loadQuestionsAll () {
-        this.questionAll.add("Warum braucht man überhautp einen Grund zum Trinken? Trinkt alle 3 Schlücke!");
+        this.questionAll.add("Warum braucht man überhaupt einen Grund zum Trinken? Trinkt alle 3 Schlücke!");
         this.questionAll.add("Lieber die Simpsons, oder Family Guy? Stimmt alle gleichzeitig ab, die Minderheit muss 4 Schlücke trinken.");
         this.questionAll.add("Trink 2 Schlücke, wenn du schon einmal gegen einen Gegenstand gelaufen bist, während du auf dein Handy geschaut hast.");
         this.questionAll.add("Wenn du denkst du bist cool, dann trink 7 Schlücke.");
+        this.questionAll.add("Wenn du hinter deinem Rücken mit den Händen klatschen kannst, dann trinke 5 Schlücke!");
         this.questionAll.add("Macht den klügsten unter euch aus. Dieser muss 3 Schlücke trinken. (Keine Sorge, die paar Gehirnzellen kannst du verkraften).");
         this.questionAll.add("Der letzte, der seine Zunge an sein Getränk hält, muss 3 Schlücke trinken.");
         this.questionAll.add("Spielt eine Runde ich hab noch nie. Jeder der es schon einmal gemacht hat, muss 1 Schluck trinken.");
@@ -180,7 +182,10 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void nextQuestion(View view) {
-        if(this.counter < 20) {
+        if (this.counter == 0){
+            this.textViewQuestion.setTextColor(this.getResources().getColor(R.color.defaultColor));
+            this.textViewQuestion.setText(this.getRandomQuestion());
+        } else if(this.counter < 20) {
             this.textViewQuestion.setText(this.getRandomQuestion());
         } else if (this.counter == 20) {
             this.textViewQuestion.setText(this.getRandomQuestion());

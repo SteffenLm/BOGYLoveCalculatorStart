@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(MainActivity.PLAYERS, this.players);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Du Dackel zu zweit sollte man Saufen nicht allein du Opfah", Toast.LENGTH_LONG ).show();
+            Toast.makeText(this, "You have to be at least two persons!", Toast.LENGTH_LONG ).show();
         }
 
     }
