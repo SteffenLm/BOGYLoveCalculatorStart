@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static  final String PLAYERS = "PLAYERS";
+    public static final String PLAYERS = "PLAYERS";
     private EditText editTextOne, editTextTwo, editTextThree, editTextFour, editTextFive;
     private ArrayList<String> players;
     private ArrayList<EditText> editTextControls;

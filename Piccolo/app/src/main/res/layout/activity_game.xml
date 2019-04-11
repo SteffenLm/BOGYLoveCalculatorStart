@@ -100,7 +100,7 @@
         android:layout_toEndOf="@+id/footerPart08"
         android:layout_toRightOf="@+id/footerPart08"
         android:background="@drawable/rounded_corners_button"
-        android:onClick="nextQuestion"
+        android:onClick="backToMain"
         android:text="@string/buttonNextText"
         android:textSize="20sp"
         android:theme="@style/AppTheme.Button"
