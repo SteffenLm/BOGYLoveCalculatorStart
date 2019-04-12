@@ -17,6 +17,7 @@
         android:layout_toRightOf="@+id/footerPart07"
         android:contentDescription="@string/sapPicDesc"
         android:paddingLeft="2dp"
+        android:paddingBottom="1dp"
         app:layout_constraintStart_toEndOf="@+id/footerPart07"
         app:layout_constraintTop_toBottomOf="@+id/viewGameTask"
         app:srcCompat="@drawable/sap_logo" />
