@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#055292</color>
     <color name="colorAccent">#00BCD4</color>
     <color name="colorFunButton">#0F74C5</color>
-    <color name="warningInitalColor">#FD0000</color>
+
+    <color name="warningInitalColor">#055292</color>
     <color name="defaultColor">#808080</color>
 </resources>

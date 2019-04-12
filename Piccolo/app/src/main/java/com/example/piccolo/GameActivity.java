@@ -31,7 +31,11 @@ public class GameActivity extends AppCompatActivity {
         this.loadData();
         this.loadQuestionPerson();
         this.loadQuestionsAll();
-        this.textViewQuestion.setText("VORSICHT!" + "\n \n" + "Übermäßigter Alkoholkonsum ist schädlich für den Körper! Trinkt verantwortungsbewusst." + "\n \n" + " - Eure Piccolo-Game-Programmierer.");
+
+        this.textViewQuestion.setText("VORSICHT!" + "\n \n" +
+                "Übermäßigter Alkoholkonsum ist schädlich für den Körper! Trinkt verantwortungsbewusst."
+                + "\n \n" + " - Eure Piccolo-Game-Programmierer.");
+
         this.textViewQuestion.setTextColor(this.getResources().getColor(R.color.warningInitalColor));
     }
 
@@ -42,7 +46,7 @@ public class GameActivity extends AppCompatActivity {
 
     private String getRandomQuestion() {
         this.counter ++;
-        Random rand = new Random();
+        Random rand = new Random(System.currentTimeMillis());
         if (rand.nextBoolean()) {
             //questionall
             int randomQuestionNumber = rand.nextInt(this.questionAll.size());
@@ -185,9 +189,9 @@ public class GameActivity extends AppCompatActivity {
         if (this.counter == 0){
             this.textViewQuestion.setTextColor(this.getResources().getColor(R.color.defaultColor));
             this.textViewQuestion.setText(this.getRandomQuestion());
-        } else if(this.counter < 20) {
+        } else if(this.counter < 25) {
             this.textViewQuestion.setText(this.getRandomQuestion());
-        } else if (this.counter == 20) {
+        } else if (this.counter == 25) {
             this.textViewQuestion.setText(this.getRandomQuestion());
             this.buttonNext.setText("END");
         } else {
