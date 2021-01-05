@@ -1,0 +1,17 @@
+{
+  "name": "tailwindcss-builder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "buildnodejs": "postcss styles.css -o ../NodeJS/public/tailwind.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "autoprefixer": "^9.8.6",
+    "postcss-cli": "^7.1.2",
+    "tailwindcss": "^1.9.5"
+  }
+}
