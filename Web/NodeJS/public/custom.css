@@ -53,5 +53,5 @@
 
 .bg-gradient {
     height: 100vh;
-    background-image: linear-gradient(135deg, #ee8181, #dc8c92, #aea9c1, #7dcaf4);
+    background-image: linear-gradient(135deg, #ee8181 20%, #dc8c92 60%, #aea9c1 , #7dcaf4);
 }
