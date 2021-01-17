@@ -11,8 +11,8 @@ const render = {
             render.index();
         })
         document.getElementById('matchbutton').addEventListener('click', () => {
-            const firstName = document.getElementById('firstname').value;
-            const secondName = document.getElementById('secondname').value;
+            const firstName = getElementValueByElementId('firstname');
+            const secondName = getElementValueByElementId('secondname');
             calculateMatch(firstName, secondName);
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
@@ -167,8 +167,8 @@ const render = {
         </div>`;
         const loginButton = document.getElementById('login');
         loginButton.addEventListener('click', () => {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            const username = getElementValueByElementId('username');
+            const password = getElementValueByElementId('password');
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
             var raw = JSON.stringify({
@@ -638,22 +638,7 @@ function renderAccountPage(loggedInUser) {
 
 }
 
-function logoutUser() {
-    deleteLocalStorage();
-    reloadPage();
-}
 
-function deleteLocalStorage() {
-    localStorage.clear();
-}
-
-function reloadPage() {
-    location.href = '/';
-}
-
-function registerClickHandler(id, handlerFunction) {
-    document.getElementById(id).addEventListener('click', handlerFunction);
-}
 
 function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
@@ -670,8 +655,8 @@ function animateValue(obj, start, end, duration) {
 }
 
 function validateUserInputStepOne() {
-    const name = document.getElementById('name').value;
-    const mail = document.getElementById('mail').value;
+    const name = getElementValueByElementId('name');
+    const mail = getElementValueByElementId('mail');
     if (name != null &&
         name != '' &&
         name.length >= 3 &&
@@ -685,8 +670,8 @@ function validateUserInputStepOne() {
 }
 
 function validateUserInputStepTwo() {
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
+    const username = getElementValueByElementId('username');
+    const password = getElementValueByElementId('password');
     if (username != null &&
         username != '' &&
         username.length >= 3 &&
@@ -706,19 +691,35 @@ function validateUserInputStepTwo() {
 }
 
 function sendRegistrationData() {
-
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify(registerUser);
-
-    var requestOptions = {
+    const raw = JSON.stringify(registerUser);
+    const requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: raw,
         redirect: 'follow'
     };
-
     return fetch("/api/register", requestOptions);
+}
 
+function logoutUser() {
+    deleteLocalStorage();
+    reloadPage();
+}
+
+function deleteLocalStorage() {
+    localStorage.clear();
+}
+
+function reloadPage() {
+    location.href = '/';
+}
+
+function registerClickHandler(id, handlerFunction) {
+    document.getElementById(id).addEventListener('click', handlerFunction);
+}
+
+function getElementValueByElementId(elementId) {
+    return document.getElementById(elementId).value;
 }
