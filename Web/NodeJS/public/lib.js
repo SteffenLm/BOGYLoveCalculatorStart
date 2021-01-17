@@ -6,7 +6,7 @@ getToken();
 
 const render = {
     index: function () {
-        content.innerHTML = renderHeader() + renderMatch();
+        content.innerHTML = renderHeader('index') + renderMatch();
         document.getElementById('logo').addEventListener('click', () => {
             render.index();
         })
@@ -55,7 +55,7 @@ const render = {
     },
 
     matches: function () {
-        content.innerHTML = renderHeader() + renderMatches() + renderModal();
+        content.innerHTML = renderHeader('matches') + renderMatches() + renderModal();
         document.getElementById('logo').addEventListener('click', () => {
             render.index();
         })
@@ -176,7 +176,12 @@ const render = {
 
             fetch("/api/login", requestOptions)
                 .then(response => response.text())
-                .then(result => cacheToken(result))
+                .then(result => {
+                    cacheToken(result);
+                    localStorage.setItem('username', username);
+                    loggedInUser.name = username;
+                    render.index();
+                })
                 .catch(error => console.log('error', error));
         });
         const registerButton = document.getElementById('register');
@@ -263,6 +268,10 @@ const matchResult = {
     result: null,
 }
 
+const loggedInUser = {
+    name: localStorage.getItem('username')
+}
+
 let sortType = 'date';
 
 if (token === null) {
@@ -274,7 +283,6 @@ if (token === null) {
 function cacheToken(result) {
     localStorage.setItem('token', result);
     token = result;
-    render.index();
 }
 
 function getToken() {
@@ -313,7 +321,70 @@ const sorters = {
 
 };
 
-function renderHeader() {
+function renderHeader(site) {
+
+    function renderHoroscopeHeaderEntry(site) {
+        let additionalCssClass = '';
+        if( site === 'horoscope') {
+            additionalCssClass = ' underline'
+        }
+        return `
+        <div class="flex flex-row py-8 ml-32">
+            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
+                <g id="Gruppe_5" data-name="Gruppe 5" transform="translate(-1076 -74)">
+                    <circle cx="22" cy="22" r="22" transform="translate(1076 74)" fill="#7dcaf4" />
+                    <circle cx="9" cy="9" r="9" transform="translate(1098 81)" fill="#fff" />
+                    <circle cx="3" cy="3" r="3" transform="translate(1092 81)" fill="#fff" />
+                </g>
+            </svg>
+            <div class="text-2xl pt-1 ml-4 uppercase${additionalCssClass}">Dein Horoskop</div>
+        </div>
+        `;
+    }
+
+    function renderMatchHeaderEntry(site) {
+        let additionalCssClass = '';
+        if( site === 'matches') {
+            additionalCssClass = ' underline'
+        }
+        return `
+        <div id="showmatches" class="flex flex-row py-8 ml-32 cursor-pointer">
+            <svg xmlns="http://www.w3.org/2000/svg" width="38.128" height="38.626" viewBox="0 0 38.128 38.626">
+                <g transform="translate(-540 -58.86)">
+                    <rect width="16.687" height="16.687" rx="2" transform="translate(561.441 58.86)" fill="#ef8181" />
+                    <rect width="16.687" height="16.687" rx="2" transform="translate(540 58.86)" fill="#ef8181" />
+                    <rect width="16.687" height="16.687" rx="2" transform="translate(540 80.799)" fill="#ef8181" />
+                    <rect width="16.687" height="16.687" rx="2" transform="translate(561.441 80.799)" fill="#ef8181" />
+                </g>
+            </svg>
+            <div class="text-2xl pt-1 ml-4 uppercase${additionalCssClass}">Deine Paarungen</div>
+        </div>
+        `;
+    }
+
+    function renderAccountHeaderEntry() {
+        debugger;
+        return `
+        <div class="mt-4">
+            <svg id="account" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="266" height="61" viewBox="0 0 266 61">
+                <g transform="translate(-1432 -72)">
+                    <g transform="translate(1432 72)" fill="#fff" stroke="#f7f7f7" stroke-width="5">
+                        <rect width="266" height="61" rx="30.5" stroke="none" />
+                        <rect x="2.5" y="2.5" width="261" height="56" rx="28" fill="none" />
+                    </g>
+                    <text transform="translate(1521 114)" font-size="32" font-family="SegoeUI, Segoe UI">
+                        <tspan x="0" y="0">${loggedInUser.name.toUpperCase()}</tspan>
+                    </text>
+                    <g transform="translate(1467 86.542)">
+                        <path
+                            d="M0,30V26.25c0-4.126,6.75-7.5,15-7.5s15,3.375,15,7.5V30ZM7.5,7.5A7.5,7.5,0,1,1,15,15,7.5,7.5,0,0,1,7.5,7.5Z"
+                            transform="translate(0 0.458)" />
+                    </g>
+                </g>
+            </svg>
+        </div>`;
+    }
+
     return `
     <div class="flex flex-row bg-white pt-4 pl-8 justify-evenly">
         <div id="logo" class="flex flex-row cursor-pointer">
@@ -327,45 +398,9 @@ function renderHeader() {
                 <div class="uppercase text-3xl text-act-blue -mt-4">Calculator</div>
             </div>
         </div>
-        <div id="showmatches" class="flex flex-row py-8 ml-32 cursor-pointer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="38.128" height="38.626" viewBox="0 0 38.128 38.626">
-                <g transform="translate(-540 -58.86)">
-                    <rect width="16.687" height="16.687" rx="2" transform="translate(561.441 58.86)" fill="#ef8181" />
-                    <rect width="16.687" height="16.687" rx="2" transform="translate(540 58.86)" fill="#ef8181" />
-                    <rect width="16.687" height="16.687" rx="2" transform="translate(540 80.799)" fill="#ef8181" />
-                    <rect width="16.687" height="16.687" rx="2" transform="translate(561.441 80.799)" fill="#ef8181" />
-                </g>
-            </svg>
-            <div class="text-2xl pt-1 ml-4 uppercase">Deine Paarungen</div>
-        </div>
-        <div class="flex flex-row py-8 ml-32">
-            <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
-                <g id="Gruppe_5" data-name="Gruppe 5" transform="translate(-1076 -74)">
-                    <circle cx="22" cy="22" r="22" transform="translate(1076 74)" fill="#7dcaf4" />
-                    <circle cx="9" cy="9" r="9" transform="translate(1098 81)" fill="#fff" />
-                    <circle cx="3" cy="3" r="3" transform="translate(1092 81)" fill="#fff" />
-                </g>
-            </svg>
-            <div class="text-2xl pt-1 ml-4 uppercase">Dein Horoskop</div>
-        </div>
-        <div class="mt-4">
-            <svg id="account" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="266" height="61" viewBox="0 0 266 61">
-                <g transform="translate(-1432 -72)">
-                    <g transform="translate(1432 72)" fill="#fff" stroke="#f7f7f7" stroke-width="5">
-                        <rect width="266" height="61" rx="30.5" stroke="none" />
-                        <rect x="2.5" y="2.5" width="261" height="56" rx="28" fill="none" />
-                    </g>
-                    <text transform="translate(1521 114)" font-size="32" font-family="SegoeUI, Segoe UI">
-                        <tspan x="0" y="0">STEFFEN</tspan>
-                    </text>
-                    <g transform="translate(1467 86.542)">
-                        <path
-                            d="M0,30V26.25c0-4.126,6.75-7.5,15-7.5s15,3.375,15,7.5V30ZM7.5,7.5A7.5,7.5,0,1,1,15,15,7.5,7.5,0,0,1,7.5,7.5Z"
-                            transform="translate(0 0.458)" />
-                    </g>
-                </g>
-            </svg>
-        </div>
+        ${renderMatchHeaderEntry(site)}
+        ${renderHoroscopeHeaderEntry(site)}
+        ${renderAccountHeaderEntry(loggedInUser.name)}
     </div>`
 }
 
