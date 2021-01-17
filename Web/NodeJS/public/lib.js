@@ -640,10 +640,7 @@ function animateValue(obj, start, end, duration) {
 function validateUserInputStepOne() {
     const name = getElementValueByElementId('name');
     const mail = getElementValueByElementId('mail');
-    if (name != null &&
-        name != '' &&
-        name.length >= 3 &&
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+    if (isValidUsername(name) && isValidMail(mail)) {
         registerUser.name = name;
         registerUser.mail = mail;
         return true;
@@ -695,6 +692,10 @@ function isValidPassword(password) {
     } else {
         return false;
     }
+}
+
+function isValidMail(mail) {
+    return /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail);
 }
 
 function logoutUser() {
