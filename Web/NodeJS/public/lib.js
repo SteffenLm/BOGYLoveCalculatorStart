@@ -14,6 +14,23 @@ const render = {
             const firstName = document.getElementById('firstname').value;
             const secondName = document.getElementById('secondname').value;
             calculateMatch(firstName, secondName);
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+            myHeaders.append("Content-Type", "application/json");
+
+            var raw = JSON.stringify(matchResult);
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("/api/match", requestOptions)
+                .then(response => response.text())
+                .then(result => console.log(result))
+                .catch(error => console.log('error', error));
         });
         document.getElementById('showmatches').addEventListener('click', () => {
             var myHeaders = new Headers();
@@ -35,29 +52,6 @@ const render = {
                 })
                 .catch(error => console.log('error', error));
         });
-        document.getElementById('savebutton').addEventListener('click', () => {
-            if (matchResult.firstname !== null && matchResult.secondname !== null && matchResult.result >= 0 && matchResult.result <= 100) {
-
-                var myHeaders = new Headers();
-                myHeaders.append("Authorization", "Bearer " + token);
-                myHeaders.append("Content-Type", "application/json");
-
-                var raw = JSON.stringify(matchResult);
-
-                var requestOptions = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    body: raw,
-                    redirect: 'follow'
-                };
-
-                fetch("/api/match", requestOptions)
-                    .then(response => response.text())
-                    .then(result => console.log(result))
-                    .catch(error => console.log('error', error));
-            }
-        });
-
     },
 
     matches: function () {
@@ -401,10 +395,6 @@ function renderMatch() {
                 <button id="matchbutton"
                     class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
                     Let's match!</button>
-                <button id="savebutton"
-                    class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                    Eintrag speichern
-                </button>
             </div>
         </div>
     </div>`
@@ -425,7 +415,7 @@ function renderMatches() {
                 <button 
             id="filter"
             class="border-act-grey border-4 focus:outline-none uppercase float-right text-act-blue bg-white rounded-full py-2 px-8 outline-none active:outline-none hover:outline-none text-xl">
-            filter
+            sortieren
         </button>       
                 <table class="table-fixed mt-16">
                     <thead>
@@ -479,7 +469,7 @@ function renderModal() {
             </button>
             <button id="date"
                 class="bg-act-grey text-left my-4 text-xl w-full max-w-xs rounded-full py-2 px-8 outline-none active:outline-none hover:outline-none focus:outline-none">
-                Datum
+                Neuste Zuerst
             </button>
             <button id="sort"
                 class="mt-4 bg-act-pink text-white text-xl max-w-xs w-40 rounded-full py-2 mx-auto outline-none focus:outline-none uppercase">
@@ -516,7 +506,7 @@ function animateValue(obj, start, end, duration) {
         if (!startTimestamp) startTimestamp = timestamp;
         const progress = Math.min((timestamp - startTimestamp) / duration, 1);
         const currentresult = Math.floor(progress * (end - start) + start);
-        obj.innerHTML = `<div class="pt-10 text-3xl ${currentresult > 50 ? 'text-act-pink' : 'text-act-blue'}"> ${currentresult} % </div>`;
+        obj.innerHTML = `<div class="pt-10 text-5xl ${currentresult > 50 ? 'text-act-pink' : 'text-act-blue'}"> ${currentresult} % </div>`;
         if (progress < 1) {
             window.requestAnimationFrame(step);
         }
