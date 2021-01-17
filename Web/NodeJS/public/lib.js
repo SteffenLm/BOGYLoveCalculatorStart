@@ -52,6 +52,9 @@ const render = {
                 })
                 .catch(error => console.log('error', error));
         });
+        document.getElementById('account').addEventListener('click', () => {
+            render.account();
+        })
     },
 
     matches: function () {
@@ -71,6 +74,9 @@ const render = {
         closeModalButton.addEventListener('click', function () {
             modal.className = "Modal is-hidden is-visuallyHidden";
         });
+        document.getElementById('account').addEventListener('click', () => {
+            render.account();
+        })
         const alphabeticalButton = document.getElementById('alfa');
         const matchpointButton = document.getElementById('points');
         const dateButton = document.getElementById('date');
@@ -165,7 +171,10 @@ const render = {
             const password = document.getElementById('password').value;
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
-            var raw = JSON.stringify({ "username": username, "password": password });
+            var raw = JSON.stringify({
+                "username": username,
+                "password": password
+            });
 
             var requestOptions = {
                 method: 'POST',
@@ -252,6 +261,33 @@ const render = {
                 alert('Überprüfe die Eingabedaten!');
             }
         });
+    },
+    account: function () {
+        content.innerHTML = renderHeader('account') + renderAccount();
+        document.getElementById('logo').addEventListener('click', () => {
+            render.index();
+        });
+        document.getElementById('showmatches').addEventListener('click', () => {
+            var myHeaders = new Headers();
+            myHeaders.append("Authorization", "Bearer " + token);
+            var requestOptions = {
+                method: 'GET',
+                headers: myHeaders,
+                redirect: 'follow'
+            };
+
+            fetch("api/match", requestOptions)
+                .then(response => response.text())
+                .then((result) => {
+                    matches = JSON.parse(result);
+                    matches.forEach((match) => {
+                        match.created_at = new Date(match.created_at);
+                    });
+                    render.matches();
+                })
+                .catch(error => console.log('error', error));
+        });
+
     }
 }
 
@@ -325,7 +361,7 @@ function renderHeader(site) {
 
     function renderHoroscopeHeaderEntry(site) {
         let additionalCssClass = '';
-        if( site === 'horoscope') {
+        if (site === 'horoscope') {
             additionalCssClass = ' underline'
         }
         return `
@@ -344,7 +380,7 @@ function renderHeader(site) {
 
     function renderMatchHeaderEntry(site) {
         let additionalCssClass = '';
-        if( site === 'matches') {
+        if (site === 'matches') {
             additionalCssClass = ' underline'
         }
         return `
@@ -363,7 +399,6 @@ function renderHeader(site) {
     }
 
     function renderAccountHeaderEntry() {
-        debugger;
         return `
         <div class="mt-4">
             <svg id="account" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="266" height="61" viewBox="0 0 266 61">
@@ -515,6 +550,45 @@ function renderModal() {
     </div>`
 }
 
+function renderAccount() {
+    return `
+    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
+        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
+            <g transform="translate(-1052 -298)">
+                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
+            </g>
+        </svg>
+        
+        <div class="flex flex-col items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
+                <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
+            </svg>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Deine E-Mail Adresse</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text" value="${loggedInUser.mail}">
+                </div>
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Dein Name</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text" value="${loggedInUser.name}">
+                </div>
+            </div>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <button style="width: 250px;" id="logout" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Ausloggen
+                    </button>
+                </div>
+                <div class="flex flex-col m-1">
+                    <button style="width: 250px;" id="reset" class="mt-4 bg-act-blue text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Zurücksetzen
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>`;
+}
 
 function calculateMatch(firstName, secondName) {
     let value = 0;
@@ -552,10 +626,10 @@ function animateValue(obj, start, end, duration) {
 function validateUserInputStepOne() {
     const name = document.getElementById('name').value;
     const mail = document.getElementById('mail').value;
-    if (name != null
-        && name != ''
-        && name.length >= 3
-        && /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
+    if (name != null &&
+        name != '' &&
+        name.length >= 3 &&
+        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(mail)) {
         registerUser.name = name;
         registerUser.mail = mail;
         return true;
@@ -567,12 +641,12 @@ function validateUserInputStepOne() {
 function validateUserInputStepTwo() {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
-    if (username != null
-        && username != ''
-        && username.length >= 3
-        && password != null
-        && password != ''
-        && password.length >= 8) {
+    if (username != null &&
+        username != '' &&
+        username.length >= 3 &&
+        password != null &&
+        password != '' &&
+        password.length >= 8) {
         registerUser.username = username;
         registerUser.password = password;
         sendRegistrationData().then((test) => {
@@ -602,4 +676,3 @@ function sendRegistrationData() {
     return fetch("/api/register", requestOptions);
 
 }
-
