@@ -621,8 +621,6 @@ function renderAccountPage(loggedInUser) {
 
 }
 
-
-
 function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
     const step = (timestamp) => {
@@ -677,6 +675,8 @@ function sendRegistrationData() {
     };
     return fetch("/api/register", requestOptions);
 }
+
+// Refactored Helper Functions
 
 function isValidUsername(username) {
     if (username != undefined && username != null && username != '' && username.length >= 3) {
