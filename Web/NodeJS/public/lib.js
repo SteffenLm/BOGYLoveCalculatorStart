@@ -7,9 +7,7 @@ getToken();
 const render = {
     index: function () {
         content.innerHTML = renderHeader('index') + renderMatch();
-        document.getElementById('logo').addEventListener('click', () => {
-            render.index();
-        })
+        registerClickHandler('logo', render.index);
         document.getElementById('matchbutton').addEventListener('click', () => {
             const firstName = getElementValueByElementId('firstname');
             const secondName = getElementValueByElementId('secondname');
@@ -52,16 +50,13 @@ const render = {
                 })
                 .catch(error => console.log('error', error));
         });
-        document.getElementById('account').addEventListener('click', () => {
-            render.account();
-        })
+        registerClickHandler('account', render.account);
     },
 
     matches: function () {
         content.innerHTML = renderHeader('matches') + renderMatches() + renderModal();
-        document.getElementById('logo').addEventListener('click', () => {
-            render.index();
-        })
+        registerClickHandler('logo', render.index);
+
         const modal = document.getElementById('myModal');
         const filterButton = document.getElementById('filter');
         filterButton.addEventListener('click', function () {
@@ -74,9 +69,8 @@ const render = {
         closeModalButton.addEventListener('click', function () {
             modal.className = "Modal is-hidden is-visuallyHidden";
         });
-        document.getElementById('account').addEventListener('click', () => {
-            render.account();
-        })
+        registerClickHandler('account', render.account);
+
         const alphabeticalButton = document.getElementById('alfa');
         const matchpointButton = document.getElementById('points');
         const dateButton = document.getElementById('date');
@@ -193,10 +187,7 @@ const render = {
                 })
                 .catch(error => console.log('error', error));
         });
-        const registerButton = document.getElementById('register');
-        registerButton.addEventListener('click', function () {
-            render.register();
-        });
+        registerClickHandler('register', render.register);
     },
     register: function () {
         content.innerHTML = `<div class="flex h-screen justify-center items-center">
@@ -230,10 +221,7 @@ const render = {
                 </div>
             </div>
         </div>`;
-        const noButton = document.getElementById('No');
-        noButton.addEventListener('click', () => {
-            render.login();
-        });
+        registerClickHandler('No', render.login);
         const registerdata = document.getElementById('registerdata');
         registerdata.innerHTML = `<h1 class="uppercase text-2xl mt-8">Registriere dich!</h1>
         <label class="mt-4" for="username">Dein Name</label>
@@ -253,10 +241,7 @@ const render = {
                 <input class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="password" type="password">
                 <button id="registerStepTwo" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
                 Und los!</button>`;
-                const finishRegistrationButton = document.getElementById('registerStepTwo');
-                finishRegistrationButton.addEventListener('click', function () {
-                    validateUserInputStepTwo();
-                })
+                registerClickHandler('registerStepTwo', validateUserInputStepTwo);
             } else {
                 alert('Überprüfe die Eingabedaten!');
             }
@@ -264,9 +249,7 @@ const render = {
     },
     account: function () {
         content.innerHTML = renderHeader('account') + renderAccount();
-        document.getElementById('logo').addEventListener('click', () => {
-            render.index();
-        });
+        registerClickHandler('logo', render.index);
         document.getElementById('showmatches').addEventListener('click', () => {
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
