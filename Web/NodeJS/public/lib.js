@@ -551,43 +551,31 @@ function renderModal() {
 }
 
 function renderAccount() {
-    return `
-    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
-        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
-            <g transform="translate(-1052 -298)">
-                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
-            </g>
-        </svg>
-        
-        <div class="flex flex-col items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
-                <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
-            </svg>
-            <div class="flex flex-row justify-between w-3/4">
-                <div class="flex flex-col m-1">
-                    <h1 class="text-xl">Deine E-Mail Adresse</h1>
-                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text" value="${loggedInUser.mail}">
-                </div>
-                <div class="flex flex-col m-1">
-                    <h1 class="text-xl">Dein Name</h1>
-                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text" value="${loggedInUser.name}">
-                </div>
-            </div>
-            <div class="flex flex-row justify-between w-3/4">
-                <div class="flex flex-col m-1">
-                    <button style="width: 250px;" id="logout" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                        Ausloggen
-                    </button>
-                </div>
-                <div class="flex flex-col m-1">
-                    <button style="width: 250px;" id="reset" class="mt-4 bg-act-blue text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                        Zurücksetzen
-                    </button>
-                </div>
-            </div>
-        </div>
-      </div>`;
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + token);
+
+    var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        body: null,
+        redirect: 'follow'
+    };
+
+
+    fetch("/api/user", requestOptions)
+        .then(response => response.text())
+        .then((userdata) => {
+            const parsedUserData = JSON.parse(userdata)[0];
+            loggedInUser.name = parsedUserData.username;
+            loggedInUser.mail = parsedUserData.mail;
+            content.removeChild(content.lastChild);
+            const node = document.createElement('div');
+            node.innerHTML = renderAccountPage(loggedInUser);
+            content.appendChild(node);
+            registerClickHandler('logoutButton', logoutUser)
+        });
 }
 
 function calculateMatch(firstName, secondName) {
@@ -607,6 +595,64 @@ function calculateMatch(firstName, secondName) {
     const obj = document.getElementById('result');
     obj.innerHTML = '';
     animateValue(obj, 99, res, 1000);
+}
+
+function renderAccountPage(loggedInUser) {
+    return `
+    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
+        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
+            <g transform="translate(-1052 -298)">
+                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
+            </g>
+        </svg>
+        
+        <div class="flex flex-col items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
+                <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
+            </svg>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Deine E-Mail Adresse</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${loggedInUser.mail}">
+                </div>
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Dein Name</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${loggedInUser.name}">
+                </div>
+            </div>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <button id="logoutButton" style="width: 250px;" id="logout" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Ausloggen
+                    </button>
+                </div>
+                <div class="flex flex-col m-1">
+                    <button style="width: 250px;" id="reset" class="mt-4 bg-act-blue text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Zurücksetzen
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>`;
+
+}
+
+function logoutUser() {
+    deleteLocalStorage();
+    reloadPage();
+}
+
+function deleteLocalStorage() {
+    localStorage.clear();
+}
+
+function reloadPage() {
+    location.href = '/';
+}
+
+function registerClickHandler(id, handlerFunction) {
+    document.getElementById(id).addEventListener('click', handlerFunction);
 }
 
 function animateValue(obj, start, end, duration) {

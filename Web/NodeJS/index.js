@@ -253,6 +253,23 @@ app.get('/api/match', function (req, res, next) {
     }
 });
 
+app.get('/api/user', function (req, res, next) {
+    const token = req.headers.authorization.slice(7)
+    if (token !== undefined && token !== null) {
+        const payload = jwt.verify(token, secretKey.secret);
+        const userid = payload.sub;
+        const selectUserQuery = `
+        SELECT username, mail
+        FROM user
+        WHERE id = ?`;
+        db.all(selectUserQuery, [userid], function (err, rows) {
+            res.status(200).send(rows);
+        });
+    } else {
+        res.status(401).end();
+    }
+});
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
