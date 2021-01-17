@@ -655,12 +655,7 @@ function validateUserInputStepOne() {
 function validateUserInputStepTwo() {
     const username = getElementValueByElementId('username');
     const password = getElementValueByElementId('password');
-    if (username != null &&
-        username != '' &&
-        username.length >= 3 &&
-        password != null &&
-        password != '' &&
-        password.length >= 8) {
+    if (isValidUsername(username) && isValidPassword(password)) {
         registerUser.username = username;
         registerUser.password = password;
         sendRegistrationData().then((test) => {
@@ -684,6 +679,22 @@ function sendRegistrationData() {
         redirect: 'follow'
     };
     return fetch("/api/register", requestOptions);
+}
+
+function isValidUsername(username) {
+    if (username != undefined && username != null && username != '' && username.length >= 3) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function isValidPassword(password) {
+    if (password != undefined && password != null && password != '' && password.length >= 8) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 function logoutUser() {
