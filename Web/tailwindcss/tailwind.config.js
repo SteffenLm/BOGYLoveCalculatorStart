@@ -1,5 +1,12 @@
 module.exports = {
   theme: {
+    fontFamily:{
+      'display': 'Quasimoda Regular',
+      'sans': ['Quasimoda Regular'],
+      'serif': ['Quasimoda Regular'],
+      'mono': ['Quasimoda Regular'],
+      
+    },
     extend: {
       colors: {
         'act-pink': '#EF8181',
