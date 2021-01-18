@@ -263,7 +263,7 @@ app.get('/api/user', function (req, res, next) {
         FROM user
         WHERE id = ?`;
         db.all(selectUserQuery, [userid], function (err, rows) {
-            res.status(200).send(rows);
+            res.status(200).send(rows[0]);
         });
     } else {
         res.status(401).end();

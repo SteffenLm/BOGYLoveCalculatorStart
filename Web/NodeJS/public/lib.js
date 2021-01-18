@@ -7,7 +7,7 @@ getToken();
 const render = {
     index: function () {
         content.innerHTML = renderHeader('index') + renderMatch();
-        registerClickHandler('logo', render.index);
+        registerClickHandler('logo', loadIndexPage);
         document.getElementById('matchbutton').addEventListener('click', () => {
             const firstName = getElementValueByElementId('firstname');
             const secondName = getElementValueByElementId('secondname');
@@ -50,13 +50,13 @@ const render = {
                 })
                 .catch(error => console.log('error', error));
         });
-        registerClickHandler('account', render.account);
+        registerClickHandler('to_account_link', loadAccountPage);
         registerClickHandler('to_horoscope_link', loadHoroscopePage)
     },
 
     matches: function () {
         content.innerHTML = renderHeader('matches') + renderMatches() + renderModal();
-        registerClickHandler('logo', render.index);
+        registerClickHandler('logo', loadIndexPage);
 
         const modal = document.getElementById('myModal');
         const filterButton = document.getElementById('filter');
@@ -70,7 +70,7 @@ const render = {
         closeModalButton.addEventListener('click', function () {
             modal.className = "Modal is-hidden is-visuallyHidden";
         });
-        registerClickHandler('account', render.account);
+        registerClickHandler('to_account_link', loadAccountPage);
 
         const alphabeticalButton = document.getElementById('alfa');
         const matchpointButton = document.getElementById('points');
@@ -184,7 +184,7 @@ const render = {
                     cacheToken(result);
                     localStorage.setItem('username', username);
                     loggedInUser.name = username;
-                    render.index();
+                    loadIndexPage();
                 })
                 .catch(error => console.log('error', error));
         });
@@ -250,7 +250,7 @@ const render = {
     },
     account: function () {
         content.innerHTML = renderHeader('account') + renderAccount();
-        registerClickHandler('logo', render.index);
+        registerClickHandler('logo', loadIndexPage);
         document.getElementById('showmatches').addEventListener('click', () => {
             var myHeaders = new Headers();
             myHeaders.append("Authorization", "Bearer " + token);
@@ -297,7 +297,7 @@ let sortType = 'date';
 if (token === null) {
     render.login();
 } else {
-    render.index();
+    loadIndexPage();
 }
 
 function cacheToken(result) {
@@ -385,7 +385,7 @@ function renderHeader(site) {
     function renderAccountHeaderEntry() {
         return `
         <div class="mt-4">
-            <svg id="account" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="266" height="61" viewBox="0 0 266 61">
+            <svg id="to_account_link" class="cursor-pointer" xmlns="http://www.w3.org/2000/svg" width="266" height="61" viewBox="0 0 266 61">
                 <g transform="translate(-1432 -72)">
                     <g transform="translate(1432 72)" fill="#fff" stroke="#f7f7f7" stroke-width="5">
                         <rect width="266" height="61" rx="30.5" stroke="none" />
@@ -406,7 +406,7 @@ function renderHeader(site) {
 
     return `
     <div class="flex flex-row bg-white pt-4 pl-8 justify-evenly">
-        <div id="logo" class="flex flex-row cursor-pointer">
+        <div id="to_logo_link" class="flex flex-row cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="78.698" height="93.705" viewBox="0 0 78.698 93.705">
                 <path
                     d="M259.871,434.859a2.972,2.972,0,0,0-2.069-2.294c-4.721-1.537-9.464-3.023-14.054-4.925a103.408,103.408,0,0,1-18.142-10.051c-.435-.292-.423-.464-.133-.847a106.2,106.2,0,0,0,6.9-10.454,93.2,93.2,0,0,0,7.227-14.717c2.348-6.358,3.946-12.834,3.229-19.693a19.1,19.1,0,0,0-1.935-6.968c-1.659-3.17-4.194-4.939-7.884-4.647a11.77,11.77,0,0,0-6.941,3.232,20.59,20.59,0,0,0-5.853,9.364,1.231,1.231,0,0,1-.266.631c-.092-.108-.181-.2-.255-.3a26.031,26.031,0,0,0-2.776-3.27c-2.961-2.963-6.275-5.284-10.6-5.751-4.735-.512-9.088,1.451-11.221,6.027a19.878,19.878,0,0,0-1.66,8.235,28.055,28.055,0,0,0,1.866,10.552,67.213,67.213,0,0,0,13.87,21.828,75.979,75.979,0,0,0,9.527,8.4c.3.229.3.349.086.647-2.28,3.1-4.8,6-7.36,8.864q-6.367,7.121-13.341,13.658a57.079,57.079,0,0,1-7.523,6.043,14.927,14.927,0,0,1-4.143,2.147,3.547,3.547,0,0,1-3.46-.573.83.83,0,0,0-1.31.22,2.028,2.028,0,0,0,.216,2.541,4.418,4.418,0,0,0,2.98,1.165,7.528,7.528,0,0,0,4.335-1.214,44.706,44.706,0,0,0,8.2-5.884,222.26,222.26,0,0,0,23.946-24.665c.5-.616.512-.624,1.151-.147a109.615,109.615,0,0,0,34.478,16.934,1.951,1.951,0,0,0,2.608-1.19A4.241,4.241,0,0,0,259.871,434.859Zm-37.419-20.02c-.193.294-.316.311-.6.1a79.912,79.912,0,0,1-11.5-9.9,62.479,62.479,0,0,1-8.435-11.84,35.844,35.844,0,0,1-3.913-9.39,18.424,18.424,0,0,1-.084-8.937,6.2,6.2,0,0,1,5.813-4.784c3.519-.376,6.47.975,9.15,3.12a23.2,23.2,0,0,1,5.712,6.784,1.478,1.478,0,0,1,.192.907,29.059,29.059,0,0,0,1.7,12.257,5.46,5.46,0,0,0,.631,1.194,1.756,1.756,0,0,0,2.888.219,5.881,5.881,0,0,0,1.408-3.666c.318-3.247-.551-6.3-1.525-9.337a9.231,9.231,0,0,0-.541-1.482,3.012,3.012,0,0,1-.2-2.167c.858-3.911,2.56-7.309,5.891-9.705a7.931,7.931,0,0,1,4.775-1.641,3.969,3.969,0,0,1,3.815,2.5,13.659,13.659,0,0,1,1.124,4.8c.047.655.007,1.316.007,1.975a41.853,41.853,0,0,1-3,14.324,107.2,107.2,0,0,1-9.372,18.672C225.142,410.892,223.777,412.852,222.452,414.839Z"
@@ -420,37 +420,6 @@ function renderHeader(site) {
         ${renderMatchHeaderEntry(site)}
         ${renderHoroscopeHeaderEntry(site)}
         ${renderAccountHeaderEntry(loggedInUser.name)}
-    </div>`
-}
-
-function renderMatch() {
-    return `
-    <div class="flex pt-16 justify-center items-center">
-        <div style="box-shadow: 5px 3px 10px grey; min-width: 700px;"
-            class="flex flex-col max-w-screen-lg bg-white rounded-lg px-16 pt-12 pb-16">
-            <div class="flex flex-row items-center">
-                <div class="flex flex-col m-1">
-                    <h1 class="uppercase text-2xl">Dein Name</h1>
-                    <input class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text">
-                </div>
-                <div id="result" class="flex flex-col">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="78.698" height="93.705" viewBox="0 0 78.698 93.705">
-                        <path id="Pfad_7" data-name="Pfad 7"
-                            d="M259.871,434.859a2.972,2.972,0,0,0-2.069-2.294c-4.721-1.537-9.464-3.023-14.054-4.925a103.408,103.408,0,0,1-18.142-10.051c-.435-.292-.423-.464-.133-.847a106.2,106.2,0,0,0,6.9-10.454,93.2,93.2,0,0,0,7.227-14.717c2.348-6.358,3.946-12.834,3.229-19.693a19.1,19.1,0,0,0-1.935-6.968c-1.659-3.17-4.194-4.939-7.884-4.647a11.77,11.77,0,0,0-6.941,3.232,20.59,20.59,0,0,0-5.853,9.364,1.231,1.231,0,0,1-.266.631c-.092-.108-.181-.2-.255-.3a26.031,26.031,0,0,0-2.776-3.27c-2.961-2.963-6.275-5.284-10.6-5.751-4.735-.512-9.088,1.451-11.221,6.027a19.878,19.878,0,0,0-1.66,8.235,28.055,28.055,0,0,0,1.866,10.552,67.213,67.213,0,0,0,13.87,21.828,75.979,75.979,0,0,0,9.527,8.4c.3.229.3.349.086.647-2.28,3.1-4.8,6-7.36,8.864q-6.367,7.121-13.341,13.658a57.079,57.079,0,0,1-7.523,6.043,14.927,14.927,0,0,1-4.143,2.147,3.547,3.547,0,0,1-3.46-.573.83.83,0,0,0-1.31.22,2.028,2.028,0,0,0,.216,2.541,4.418,4.418,0,0,0,2.98,1.165,7.528,7.528,0,0,0,4.335-1.214,44.706,44.706,0,0,0,8.2-5.884,222.26,222.26,0,0,0,23.946-24.665c.5-.616.512-.624,1.151-.147a109.615,109.615,0,0,0,34.478,16.934,1.951,1.951,0,0,0,2.608-1.19A4.241,4.241,0,0,0,259.871,434.859Zm-37.419-20.02c-.193.294-.316.311-.6.1a79.912,79.912,0,0,1-11.5-9.9,62.479,62.479,0,0,1-8.435-11.84,35.844,35.844,0,0,1-3.913-9.39,18.424,18.424,0,0,1-.084-8.937,6.2,6.2,0,0,1,5.813-4.784c3.519-.376,6.47.975,9.15,3.12a23.2,23.2,0,0,1,5.712,6.784,1.478,1.478,0,0,1,.192.907,29.059,29.059,0,0,0,1.7,12.257,5.46,5.46,0,0,0,.631,1.194,1.756,1.756,0,0,0,2.888.219,5.881,5.881,0,0,0,1.408-3.666c.318-3.247-.551-6.3-1.525-9.337a9.231,9.231,0,0,0-.541-1.482,3.012,3.012,0,0,1-.2-2.167c.858-3.911,2.56-7.309,5.891-9.705a7.931,7.931,0,0,1,4.775-1.641,3.969,3.969,0,0,1,3.815,2.5,13.659,13.659,0,0,1,1.124,4.8c.047.655.007,1.316.007,1.975a41.853,41.853,0,0,1-3,14.324,107.2,107.2,0,0,1-9.372,18.672C225.142,410.892,223.777,412.852,222.452,414.839Z"
-                            transform="translate(-181.302 -360.232)" fill="#ef8181" />
-                    </svg>
-                </div>
-                <div class="flex flex-col m-1">
-                    <h1 class="uppercase text-2xl">Dein Schwarm</h1>
-                    <input class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="secondname" type="text">
-                </div>
-            </div>
-            <div class="flex flex-row">
-                <button id="matchbutton"
-                    class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                    Let's match!</button>
-            </div>
-        </div>
     </div>`
 }
 
@@ -534,34 +503,6 @@ function renderModal() {
     </div>`
 }
 
-function renderAccount() {
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + token);
-
-    var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        body: null,
-        redirect: 'follow'
-    };
-
-
-    fetch("/api/user", requestOptions)
-        .then(response => response.text())
-        .then((userdata) => {
-            const parsedUserData = JSON.parse(userdata)[0];
-            loggedInUser.name = parsedUserData.username;
-            loggedInUser.mail = parsedUserData.mail;
-            content.removeChild(content.lastChild);
-            const node = document.createElement('div');
-            node.innerHTML = renderAccountPage(loggedInUser);
-            content.appendChild(node);
-            registerClickHandler('logoutButton', logoutUser)
-        });
-}
-
 function calculateMatch(firstName, secondName) {
     let value = 0;
     for (let index = 0; index < firstName.length; index++) {
@@ -581,46 +522,6 @@ function calculateMatch(firstName, secondName) {
     animateValue(obj, 99, res, 1000);
 }
 
-function renderAccountPage(loggedInUser) {
-    return `
-    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
-        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
-            <g transform="translate(-1052 -298)">
-                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
-            </g>
-        </svg>
-        
-        <div class="flex flex-col items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
-                <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
-            </svg>
-            <div class="flex flex-row justify-between w-3/4">
-                <div class="flex flex-col m-1">
-                    <h1 class="text-xl">Deine E-Mail Adresse</h1>
-                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${loggedInUser.mail}">
-                </div>
-                <div class="flex flex-col m-1">
-                    <h1 class="text-xl">Dein Name</h1>
-                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${loggedInUser.name}">
-                </div>
-            </div>
-            <div class="flex flex-row justify-between w-3/4">
-                <div class="flex flex-col m-1">
-                    <button id="logoutButton" style="width: 250px;" id="logout" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                        Ausloggen
-                    </button>
-                </div>
-                <div class="flex flex-col m-1">
-                    <button style="width: 250px;" id="reset" class="mt-4 bg-act-blue text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
-                        Zurücksetzen
-                    </button>
-                </div>
-            </div>
-        </div>
-      </div>`;
-
-}
 
 function animateValue(obj, start, end, duration) {
     let startTimestamp = null;
@@ -678,6 +579,71 @@ function sendRegistrationData() {
 }
 
 // Load Pages
+async function loadAccountPage() {
+    const accountData = await loadAccountData();
+    renderAccountPage(accountData);
+    registerAccountPageClickhandler();
+}
+
+function loadAccountData() {
+    const request = {
+        method: 'GET',
+        headers: generateAuthenticatedJSONHeader(),
+        body: null,
+        redirect: 'follow'
+    };
+    return fetch('/api/user', request).then(response => response.json());
+}
+
+function renderAccountPage(accountData) {
+    const headerHTML = renderHeader('horoscope');
+    const mainHTML = `
+    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
+        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
+            <g transform="translate(-1052 -298)">
+                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
+            </g>
+        </svg>
+        
+        <div class="flex flex-col items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
+                <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
+            </svg>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Deine E-Mail Adresse</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${accountData.mail}">
+                </div>
+                <div class="flex flex-col m-1">
+                    <h1 class="text-xl">Dein Name</h1>
+                    <input disabled class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" type="text" value="${accountData.username}">
+                </div>
+            </div>
+            <div class="flex flex-row justify-between w-3/4">
+                <div class="flex flex-col m-1">
+                    <button id="logoutButton" style="width: 250px;" id="logout" class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Ausloggen
+                    </button>
+                </div>
+                <div class="flex flex-col m-1">
+                    <button style="width: 250px;" id="reset" class="mt-4 bg-act-blue text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                        Zurücksetzen
+                    </button>
+                </div>
+            </div>
+        </div>
+      </div>`;
+    setPageContent(headerHTML + mainHTML);
+}
+
+function registerAccountPageClickhandler() {
+    registerHeaderClickHandler();
+    registerClickHandler('logoutButton', logoutUser);
+}
+
+
+
 async function loadHoroscopePage() {
     const horoscopeData = await loadHoroscopeData();
     renderHoroscopePage(horoscopeData);
@@ -705,12 +671,56 @@ function renderHoroscopePage(horoscopeData) {
 function registerHoroscopePageClickhandler() {
     registerHeaderClickHandler();
     //TODO: Implement Click Handler for mainHTML in renderHoroscopePage
-
 }
 
+// Load Pages
+async function loadIndexPage() {
+    renderIndexPage();
+    registerIndexPageClickhandler();
+}
+
+function renderIndexPage() {
+    const headerHTML = renderHeader('index');
+    const mainHTML = `
+    <div class="flex pt-16 justify-center items-center">
+        <div style="box-shadow: 5px 3px 10px grey; min-width: 700px;"
+            class="flex flex-col max-w-screen-lg bg-white rounded-lg px-16 pt-12 pb-16">
+            <div class="flex flex-row items-center">
+                <div class="flex flex-col m-1">
+                    <h1 class="uppercase text-2xl">Dein Name</h1>
+                    <input class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="firstname" type="text">
+                </div>
+                <div id="result" class="flex flex-col">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="78.698" height="93.705" viewBox="0 0 78.698 93.705">
+                        <path id="Pfad_7" data-name="Pfad 7"
+                            d="M259.871,434.859a2.972,2.972,0,0,0-2.069-2.294c-4.721-1.537-9.464-3.023-14.054-4.925a103.408,103.408,0,0,1-18.142-10.051c-.435-.292-.423-.464-.133-.847a106.2,106.2,0,0,0,6.9-10.454,93.2,93.2,0,0,0,7.227-14.717c2.348-6.358,3.946-12.834,3.229-19.693a19.1,19.1,0,0,0-1.935-6.968c-1.659-3.17-4.194-4.939-7.884-4.647a11.77,11.77,0,0,0-6.941,3.232,20.59,20.59,0,0,0-5.853,9.364,1.231,1.231,0,0,1-.266.631c-.092-.108-.181-.2-.255-.3a26.031,26.031,0,0,0-2.776-3.27c-2.961-2.963-6.275-5.284-10.6-5.751-4.735-.512-9.088,1.451-11.221,6.027a19.878,19.878,0,0,0-1.66,8.235,28.055,28.055,0,0,0,1.866,10.552,67.213,67.213,0,0,0,13.87,21.828,75.979,75.979,0,0,0,9.527,8.4c.3.229.3.349.086.647-2.28,3.1-4.8,6-7.36,8.864q-6.367,7.121-13.341,13.658a57.079,57.079,0,0,1-7.523,6.043,14.927,14.927,0,0,1-4.143,2.147,3.547,3.547,0,0,1-3.46-.573.83.83,0,0,0-1.31.22,2.028,2.028,0,0,0,.216,2.541,4.418,4.418,0,0,0,2.98,1.165,7.528,7.528,0,0,0,4.335-1.214,44.706,44.706,0,0,0,8.2-5.884,222.26,222.26,0,0,0,23.946-24.665c.5-.616.512-.624,1.151-.147a109.615,109.615,0,0,0,34.478,16.934,1.951,1.951,0,0,0,2.608-1.19A4.241,4.241,0,0,0,259.871,434.859Zm-37.419-20.02c-.193.294-.316.311-.6.1a79.912,79.912,0,0,1-11.5-9.9,62.479,62.479,0,0,1-8.435-11.84,35.844,35.844,0,0,1-3.913-9.39,18.424,18.424,0,0,1-.084-8.937,6.2,6.2,0,0,1,5.813-4.784c3.519-.376,6.47.975,9.15,3.12a23.2,23.2,0,0,1,5.712,6.784,1.478,1.478,0,0,1,.192.907,29.059,29.059,0,0,0,1.7,12.257,5.46,5.46,0,0,0,.631,1.194,1.756,1.756,0,0,0,2.888.219,5.881,5.881,0,0,0,1.408-3.666c.318-3.247-.551-6.3-1.525-9.337a9.231,9.231,0,0,0-.541-1.482,3.012,3.012,0,0,1-.2-2.167c.858-3.911,2.56-7.309,5.891-9.705a7.931,7.931,0,0,1,4.775-1.641,3.969,3.969,0,0,1,3.815,2.5,13.659,13.659,0,0,1,1.124,4.8c.047.655.007,1.316.007,1.975a41.853,41.853,0,0,1-3,14.324,107.2,107.2,0,0,1-9.372,18.672C225.142,410.892,223.777,412.852,222.452,414.839Z"
+                            transform="translate(-181.302 -360.232)" fill="#ef8181" />
+                    </svg>
+                </div>
+                <div class="flex flex-col m-1">
+                    <h1 class="uppercase text-2xl">Dein Schwarm</h1>
+                    <input class="mt-3 pl-4 bg-act-grey rounded-full outline-none text-2xl" id="secondname" type="text">
+                </div>
+            </div>
+            <div class="flex flex-row">
+                <button id="matchbutton"
+                    class="mt-4 bg-act-pink text-white rounded-full py-2 px-4 mx-auto outline-none focus:outline-none">
+                    Let's match!</button>
+            </div>
+        </div>
+    </div>`;
+    setPageContent(headerHTML + mainHTML);
+}
+
+function registerIndexPageClickhandler() {
+    registerHeaderClickHandler();
+}
+
+
+
 function registerHeaderClickHandler() {
-    registerClickHandler('logo', render.index);
-    registerClickHandler('account', render.account);
+    registerClickHandler('to_logo_link', loadIndexPage);
+    registerClickHandler('to_account_link', loadAccountPage);
     registerClickHandler('to_horoscope_link', loadHoroscopePage);
 }
 
