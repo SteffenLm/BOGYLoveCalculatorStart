@@ -51,6 +51,7 @@ const render = {
                 .catch(error => console.log('error', error));
         });
         registerClickHandler('account', render.account);
+        registerClickHandler('to_horoscope_link', loadHoroscopePage)
     },
 
     matches: function () {
@@ -348,7 +349,7 @@ function renderHeader(site) {
             additionalCssClass = ' underline'
         }
         return `
-        <div class="flex flex-row py-8 ml-32">
+        <div id="to_horoscope_link" class="flex flex-row py-8 ml-32">
             <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44">
                 <g id="Gruppe_5" data-name="Gruppe 5" transform="translate(-1076 -74)">
                     <circle cx="22" cy="22" r="22" transform="translate(1076 74)" fill="#7dcaf4" />
@@ -676,7 +677,59 @@ function sendRegistrationData() {
     return fetch("/api/register", requestOptions);
 }
 
+// Load Pages
+async function loadHoroscopePage() {
+    const horoscopeData = await loadHoroscopeData();
+    renderHoroscopePage(horoscopeData);
+    registerHoroscopePageClickhandler();
+}
+
+function loadHoroscopeData() {
+    const request = {
+        method: 'GET',
+        headers: generateAuthenticatedJSONHeader(),
+        body: null,
+        redirect: 'follow'
+    };
+    return fetch('api/horoscope', request).then(response => response.json());
+}
+
+function renderHoroscopePage(horoscopeData) {
+    const headerHTML = renderHeader('horoscope');
+    const mainHTML = `
+    `;
+    //TODO: implement mainHTML Page
+    setPageContent(headerHTML + mainHTML);
+}
+
+function registerHoroscopePageClickhandler() {
+    registerHeaderClickHandler();
+    //TODO: Implement Click Handler for mainHTML in renderHoroscopePage
+
+}
+
+function registerHeaderClickHandler() {
+    registerClickHandler('logo', render.index);
+    registerClickHandler('account', render.account);
+    registerClickHandler('to_horoscope_link', loadHoroscopePage);
+}
+
 // Refactored Helper Functions
+
+function getContentElement() {
+    return document.getElementById('content');
+}
+
+function setPageContent(pageContent) {
+    getContentElement().innerHTML = pageContent;
+}
+
+function generateAuthenticatedJSONHeader() {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + token);
+    return myHeaders;
+}
 
 function isValidUsername(username) {
     if (username != undefined && username != null && username != '' && username.length >= 3) {
