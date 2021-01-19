@@ -1,6 +1,6 @@
 const content = document.getElementById('content');
 let token = null;
-let matches = null;
+let globalMatches = null;
 
 getToken();
 
@@ -52,80 +52,6 @@ const render = {
         });
         registerClickHandler('to_account_link', loadAccountPage);
         registerClickHandler('to_horoscope_link', loadHoroscopePage)
-    },
-
-    matches: function () {
-        content.innerHTML = renderHeader('matches') + renderMatches() + renderModal();
-        registerClickHandler('logo', loadIndexPage);
-
-        const modal = document.getElementById('myModal');
-        const filterButton = document.getElementById('filter');
-        filterButton.addEventListener('click', function () {
-            modal.className = "Modal is-visuallyHidden";
-            setTimeout(function () {
-                modal.className = "Modal";
-            }, 100);
-        });
-        const closeModalButton = document.getElementById("closeModal");
-        closeModalButton.addEventListener('click', function () {
-            modal.className = "Modal is-hidden is-visuallyHidden";
-        });
-        registerClickHandler('to_account_link', loadAccountPage);
-
-        const alphabeticalButton = document.getElementById('alfa');
-        const matchpointButton = document.getElementById('points');
-        const dateButton = document.getElementById('date');
-
-        alphabeticalButton.addEventListener('click', function () {
-            sortType = 'alfa';
-            const activeClass = ['bg-act-blue', 'text-white'];
-            const inactiveClass = ['bg-act-grey', 'text-black'];
-            alphabeticalButton.classList.remove(...inactiveClass);
-            alphabeticalButton.classList.add(...activeClass);
-            matchpointButton.classList.remove(...activeClass);
-            matchpointButton.classList.add(...inactiveClass);
-            dateButton.classList.remove(...activeClass);
-            dateButton.classList.add(...inactiveClass);
-        });
-        matchpointButton.addEventListener('click', function () {
-            sortType = 'result';
-            const activeClass = ['bg-act-blue', 'text-white'];
-            const inactiveClass = ['bg-act-grey', 'text-black'];
-            alphabeticalButton.classList.remove(...activeClass);
-            alphabeticalButton.classList.add(...inactiveClass);
-            dateButton.classList.remove(...activeClass);
-            dateButton.classList.add(...inactiveClass);
-            matchpointButton.classList.remove(...inactiveClass);
-            matchpointButton.classList.add(...activeClass);
-        });
-        dateButton.addEventListener('click', function () {
-            sortType = 'date';
-            const activeClass = ['bg-act-blue', 'text-white'];
-            const inactiveClass = ['bg-act-grey', 'text-black'];
-            alphabeticalButton.classList.remove(...activeClass);
-            alphabeticalButton.classList.add(...inactiveClass);
-            matchpointButton.classList.remove(...activeClass);
-            matchpointButton.classList.add(...inactiveClass);
-            dateButton.classList.remove(...inactiveClass);
-            dateButton.classList.add(...activeClass);
-        });
-        const okButton = document.getElementById('sort');
-        okButton.addEventListener('click', function () {
-            switch (sortType) {
-                case 'date':
-                    sorters.date();
-                    break;
-                case 'alfa':
-                    sorters.alfa()
-                    break;
-                case 'result':
-                    sorters.result();
-                    break;
-                default:
-                    sorters.date();
-                    break;
-            }
-        });
     },
 
     login: function () {
@@ -247,31 +173,6 @@ const render = {
                 alert('Überprüfe die Eingabedaten!');
             }
         });
-    },
-    account: function () {
-        content.innerHTML = renderHeader('account') + renderAccount();
-        registerClickHandler('logo', loadIndexPage);
-        document.getElementById('showmatches').addEventListener('click', () => {
-            var myHeaders = new Headers();
-            myHeaders.append("Authorization", "Bearer " + token);
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            };
-
-            fetch("api/match", requestOptions)
-                .then(response => response.text())
-                .then((result) => {
-                    matches = JSON.parse(result);
-                    matches.forEach((match) => {
-                        match.created_at = new Date(match.created_at);
-                    });
-                    render.matches();
-                })
-                .catch(error => console.log('error', error));
-        });
-
     }
 }
 
@@ -312,35 +213,6 @@ function getToken() {
     return token;
 }
 
-const sorters = {
-    result: function () {
-        matches.sort((matchA, matchB) => matchB.result - matchA.result);
-        render.matches();
-    },
-    date: function () {
-        matches.sort((matchA, matchB) => {
-            return matchB.created_at.getTime() - matchA.created_at.getTime()
-        });
-        render.matches();
-    },
-    alfa: function () {
-        matches.sort((matchA, matchB) => {
-            const firstnameA = matchA.firstname.toLowerCase();
-            const firstnameB = matchB.firstname.toLowerCase();
-
-            if (firstnameA < firstnameB) {
-                return -1;
-            } else if (firstnameA > firstnameB) {
-                return 1;
-            } else {
-                return 0;
-            }
-        });
-        render.matches();
-    }
-
-};
-
 function renderHeader(site) {
 
     function renderHoroscopeHeaderEntry(site) {
@@ -368,7 +240,7 @@ function renderHeader(site) {
             additionalCssClass = ' underline'
         }
         return `
-        <div id="showmatches" class="flex flex-row py-8 ml-32 cursor-pointer">
+        <div id="to_matches_link" class="flex flex-row py-8 ml-32 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" width="38.128" height="38.626" viewBox="0 0 38.128 38.626">
                 <g transform="translate(-540 -58.86)">
                     <rect width="16.687" height="16.687" rx="2" transform="translate(561.441 58.86)" fill="#ef8181" />
@@ -424,6 +296,7 @@ function renderHeader(site) {
 }
 
 function renderMatches() {
+    const matches = getGlobalMatches();
     if (matches.length === 0) {
         return '';
     } else {
@@ -578,7 +451,7 @@ function sendRegistrationData() {
     return fetch("/api/register", requestOptions);
 }
 
-// Load Pages
+// ACCOUNT PAGE
 async function loadAccountPage() {
     const accountData = await loadAccountData();
     renderAccountPage(accountData);
@@ -596,7 +469,7 @@ function loadAccountData() {
 }
 
 function renderAccountPage(accountData) {
-    const headerHTML = renderHeader('horoscope');
+    const headerHTML = renderHeader('account');
     const mainHTML = `
     <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
         <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
@@ -642,8 +515,137 @@ function registerAccountPageClickhandler() {
     registerClickHandler('logoutButton', logoutUser);
 }
 
+// MATCHES PAGE
+async function loadMatchesPage() {
+    const matchesData = await loadMatchesData();
+    matchesData.forEach((match) => {
+        match.created_at = new Date(match.created_at);
+    });
+    setGlobalMatches(matchesData);
+    renderMatchesPage(matchesData);
+    registerMatchesPageClickhandler();
+}
 
+function loadMatchesData() {
+    const request = {
+        method: 'GET',
+        headers: generateAuthenticatedJSONHeader(),
+        body: null,
+        redirect: 'follow'
+    };
+    return fetch('api/match', request).then(response => response.json());
+}
 
+function renderMatchesPage(matchesData) {
+    const headerHTML = renderHeader('matches');
+    let mainHTML = ''
+    if (matchesData.length !== 0) {
+        let renderedRows = '';
+        matchesData.forEach(element => {
+            renderedRows += renderMatchRow(element);
+        });
+        mainHTML = `
+        <div class="flex pt-16 justify-center items-center">
+            <div style="box-shadow: 5px 3px 10px grey;"
+                class="block max-w-screen-lg bg-white rounded-lg px-16 pt-12 pb-16 w-full mx-4 lg:mx-0">
+                <button 
+            id="filter"
+            class="border-act-grey border-4 focus:outline-none uppercase float-right text-act-blue bg-white rounded-full py-2 px-8 outline-none active:outline-none hover:outline-none text-xl">
+            sortieren
+        </button>       
+                <table class="table-fixed mt-16">
+                    <thead>
+                        <tr>
+                            <th class="w-1/3 uppercase px-4 py-2 text-3xl">Dein Name</th>
+                            <th class="w-1/3 uppercase px-4 py-2 text-3xl">Dein Schwarm</th>
+                            <th class="w-1/3 uppercase px-4 py-2 text-3xl">Euer Match</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablebody">
+                        ${renderedRows}
+                    </tbody>
+                </table>
+            </div>
+        </div>`;
+    }
+    setPageContent(headerHTML + mainHTML + renderModal());
+}
+
+function registerMatchesPageClickhandler() {
+    registerHeaderClickHandler();
+    registerClickHandler('filter', function () {
+        const modal = document.getElementById('myModal');
+        modal.className = "Modal is-visuallyHidden";
+        setTimeout(function () {
+            modal.className = "Modal";
+        }, 100);
+    });
+    registerClickHandler('closeModal', function () {
+        const modal = document.getElementById('myModal');
+        modal.className = 'Modal is-hidden is-visuallyHidden';
+    });
+    const alphabeticalButton = document.getElementById('alfa');
+    const matchpointButton = document.getElementById('points');
+    const dateButton = document.getElementById('date');
+    registerClickHandler('alfa', function () {
+        sortType = 'alfa';
+        const activeClass = ['bg-act-blue', 'text-white'];
+        const inactiveClass = ['bg-act-grey', 'text-black'];
+        alphabeticalButton.classList.remove(...inactiveClass);
+        alphabeticalButton.classList.add(...activeClass);
+        matchpointButton.classList.remove(...activeClass);
+        matchpointButton.classList.add(...inactiveClass);
+        dateButton.classList.remove(...activeClass);
+        dateButton.classList.add(...inactiveClass);
+    });
+    registerClickHandler('points', function () {
+        sortType = 'result';
+        const activeClass = ['bg-act-blue', 'text-white'];
+        const inactiveClass = ['bg-act-grey', 'text-black'];
+        alphabeticalButton.classList.remove(...activeClass);
+        alphabeticalButton.classList.add(...inactiveClass);
+        dateButton.classList.remove(...activeClass);
+        dateButton.classList.add(...inactiveClass);
+        matchpointButton.classList.remove(...inactiveClass);
+        matchpointButton.classList.add(...activeClass);
+    });
+    registerClickHandler('date', function () {
+        sortType = 'date';
+        const activeClass = ['bg-act-blue', 'text-white'];
+        const inactiveClass = ['bg-act-grey', 'text-black'];
+        alphabeticalButton.classList.remove(...activeClass);
+        alphabeticalButton.classList.add(...inactiveClass);
+        matchpointButton.classList.remove(...activeClass);
+        matchpointButton.classList.add(...inactiveClass);
+        dateButton.classList.remove(...inactiveClass);
+        dateButton.classList.add(...activeClass);
+    });
+    registerClickHandler('sort', function () {
+        const matches = getGlobalMatches();
+        switch (sortType) {
+            case 'date':
+                const sortedMatchesByDate = sortMatchesByDateDesc(matches);
+                setGlobalMatches(sortedMatchesByDate);
+                break;
+            case 'alfa':
+                const sortedMatchesByFirstname = sortMatchesByFirstnameDesc(matches);
+                setGlobalMatches(sortedMatchesByFirstname);
+                break;
+            case 'result':
+                const sortedMatchesByResult = sortMatchesByResultDesc(matches);
+                setGlobalMatches(sortedMatchesByResult);
+                break;
+            default:
+                const sortedMatchesByDate2 = sortMatchesByDateDesc(matches);
+                setGlobalMatches(sortedMatchesByDate2);
+                break;
+        }
+        renderMatchesPage(getGlobalMatches());
+        registerMatchesPageClickhandler();
+    });
+}
+
+// HOROSCOPE PAGE
 async function loadHoroscopePage() {
     const horoscopeData = await loadHoroscopeData();
     renderHoroscopePage(horoscopeData);
@@ -673,7 +675,7 @@ function registerHoroscopePageClickhandler() {
     //TODO: Implement Click Handler for mainHTML in renderHoroscopePage
 }
 
-// Load Pages
+// INDEX PAGE
 async function loadIndexPage() {
     renderIndexPage();
     registerIndexPageClickhandler();
@@ -716,15 +718,50 @@ function registerIndexPageClickhandler() {
     registerHeaderClickHandler();
 }
 
+// Refactored Helper Functions
 
+function setGlobalMatches(matches) {
+    globalMatches = matches;
+}
+
+function getGlobalMatches() {
+    return globalMatches;
+}
+
+function sortMatchesByResultDesc(matches) {
+    matches.sort((matchA, matchB) => matchB.result - matchA.result);
+    return matches;
+}
+
+function sortMatchesByDateDesc(matches) {
+    matches.sort((matchA, matchB) => {
+        return matchB.created_at.getTime() - matchA.created_at.getTime()
+    });
+    return matches;
+}
+
+function sortMatchesByFirstnameDesc(matches) {
+    matches.sort((matchA, matchB) => {
+        const firstnameA = matchA.firstname.toLowerCase();
+        const firstnameB = matchB.firstname.toLowerCase();
+
+        if (firstnameA < firstnameB) {
+            return -1;
+        } else if (firstnameA > firstnameB) {
+            return 1;
+        } else {
+            return 0;
+        }
+    });
+    return matches;
+}
 
 function registerHeaderClickHandler() {
     registerClickHandler('to_logo_link', loadIndexPage);
+    registerClickHandler('to_matches_link', loadMatchesPage);
     registerClickHandler('to_account_link', loadAccountPage);
     registerClickHandler('to_horoscope_link', loadHoroscopePage);
 }
-
-// Refactored Helper Functions
 
 function getContentElement() {
     return document.getElementById('content');
