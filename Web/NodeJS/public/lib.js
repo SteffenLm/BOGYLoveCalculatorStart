@@ -385,14 +385,18 @@ function calculateMatch(firstName, secondName) {
         value += secondName.charCodeAt(index)
     }
     const res = value % 100;
+    const calculatedMatch = {
+        firstname: firstName,
+        secondname: secondName,
+        result: res
+    }
+    return calculatedMatch;
+}
 
-    matchResult.firstname = firstName;
-    matchResult.secondname = secondName;
-    matchResult.result = res;
-
+function renderAnimatedResult(result) {
     const obj = document.getElementById('result');
     obj.innerHTML = '';
-    animateValue(obj, 99, res, 1000);
+    animateValue(obj, 99, result, 1000);
 }
 
 
@@ -716,6 +720,24 @@ function renderIndexPage() {
 
 function registerIndexPageClickhandler() {
     registerHeaderClickHandler();
+    registerClickHandler('matchbutton', function () {
+        const firstName = getElementValueByElementId('firstname');
+        const secondName = getElementValueByElementId('secondname');
+        const calculatedMatch = calculateMatch(firstName, secondName);
+        renderAnimatedResult(calculatedMatch.result);
+
+        var requestOptions = {
+            method: 'POST',
+            headers: generateAuthenticatedJSONHeader(),
+            body: JSON.stringify(calculatedMatch),
+            redirect: 'follow'
+        };
+
+        fetch("/api/match", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log('error', error));
+    });
 }
 
 // Refactored Helper Functions
