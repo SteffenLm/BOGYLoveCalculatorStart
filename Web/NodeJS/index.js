@@ -189,13 +189,13 @@ app.post('/api/register', function (req, res, next) {
 app.post('/api/login', function (req, res, next) {
     const password = req.body.password;
     const username = req.body.username;
-    if (password != null && password != '' && password.length >= 8 && username != null && username != '' && username.length >= 3) {
+    if (password != undefined && password != null && password != '' && password.length >= 8 && username != undefined && username != null && username != '' && username.length >= 3) {
         //check if mail is already used
         const countQuery = `SELECT *
         FROM user
         WHERE username = ?`;
         db.get(countQuery, [username], (err, row) => {
-            if (row.username == username && row.password === password) {
+            if (row != null && row.username == username && row.password === password) {
                 const payload = {
                     sub: row.id
                 };

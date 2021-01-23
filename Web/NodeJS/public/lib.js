@@ -1,6 +1,7 @@
 const content = document.getElementById('content');
 let token = null;
 let globalMatches = null;
+let globalHoroscopeData = null;
 
 getToken();
 
@@ -476,13 +477,6 @@ function renderAccountPage(accountData) {
     const headerHTML = renderHeader('account');
     const mainHTML = `
     <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
-        <svg class="float-right cursor-pointer" id="closeModal" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
-            <circle cx="20" cy="20" r="20" fill="#f7f7f7"></circle>
-            <g transform="translate(-1052 -298)">
-                <path d="M7.778,9.192,1.414,15.557,0,14.142,6.364,7.778,0,1.414,1.414,0,7.778,6.364,14.142,0l1.415,1.414L9.192,7.778l6.364,6.364-1.415,1.415Z" transform="translate(1064 310)"></path>
-            </g>
-        </svg>
-        
         <div class="flex flex-col items-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="317" height="317" viewBox="0 0 317 317">
                 <circle id="Ellipse_115" data-name="Ellipse 115" cx="158.5" cy="158.5" r="158.5" fill="#7dcaf4"/>
@@ -652,7 +646,8 @@ function registerMatchesPageClickhandler() {
 // HOROSCOPE PAGE
 async function loadHoroscopePage() {
     const horoscopeData = await loadHoroscopeData();
-    renderHoroscopePage(horoscopeData);
+    setGlobalHoroscopeData(horoscopeData);
+    renderHoroscopePage(getGlobalHoroscopeData);
     registerHoroscopePageClickhandler();
 }
 
@@ -669,14 +664,97 @@ function loadHoroscopeData() {
 function renderHoroscopePage(horoscopeData) {
     const headerHTML = renderHeader('horoscope');
     const mainHTML = `
-    `;
-    //TODO: implement mainHTML Page
+    <div class="mt-10 p-5 pl-10 m-auto bg-white w-3/4 max-w-screen-lg rounded-3xl">
+        <div class="mt-16 flex flex-col items-center min-h-full">
+            <div class="flex flex-row w-full">
+                <div
+                    style="height: 430px; width: 450px; border-color: #F7F7F7"
+                    class="border-4 rounded-3xl">
+                    <div class="flex flex-col">
+                        <div id="month-text" class="text-center text-4xl uppercase mt-24">
+                            ${getTextOfMonth(getCurrentMonth())}
+                        </div>
+                        <div class="mt-10 mx-auto">
+                            <div class="flex flex-row">
+                                <div id="0" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">1</div>
+                                <div id="1" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">2</div>
+                                <div id="2" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">3</div>
+                                <div id="3" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">4</div>
+                            </div>
+                            <div class="flex flex-row">
+                                <div id="4" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">5</div>
+                                <div id="5" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">6</div>
+                                <div id="6" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">7</div>
+                                <div id="7" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">8</div>
+                            </div>
+                            <div class="flex flex-row">
+                                <div id="8" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">9</div>
+                                <div id="9" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">10</div>
+                                <div id="10" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">11</div>
+                                <div id="11" style="height: 50px; width: 50px;" class="text-center mx-4 flex flex-col justify-center content-center">12</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="max-width: 450px;" class="flex flex-col ml-4">
+                    <div class="uppercase text-3xl text-act-pink">Good Karma</div>
+                    <div id="detail-month" class="uppercase text-3xl text-act-blue">Dein Horoscop zum ${getTextOfMonth(getCurrentMonth())}</div>
+                    <div id="detail-horoscope-text">${getGlobalHoroscopeData()[getCurrentMonth()]}</div>
+                </div>
+            </div>
+        </div>
+      </div>`;
     setPageContent(headerHTML + mainHTML);
 }
 
 function registerHoroscopePageClickhandler() {
+    
     registerHeaderClickHandler();
-    //TODO: Implement Click Handler for mainHTML in renderHoroscopePage
+    for (let index = 0; index < 12; index++) {
+        registerClickHandler(index, changeHoroscopeMonth);
+    }
+}
+
+function changeHoroscopeMonth(event) {
+    const clickedCalendarMonthElement = document.getElementById(event.currentTarget.id);
+    removeHighlightingClassesOfCalendar();
+    addHighlightingClassesToCalendarItem(clickedCalendarMonthElement);
+    changeCalendarText(clickedCalendarMonthElement);
+    changeHoroscopeText(clickedCalendarMonthElement);
+}
+
+function changeCalendarText(clickedMonthElement) {
+    const textualRepresentationOfMonth = getTextOfMonth(clickedMonthElement.id);
+    document.getElementById('detail-month').innerHTML = `Dein Horoscop zum ${textualRepresentationOfMonth}`;
+    document.getElementById('month-text').innerHTML = textualRepresentationOfMonth;
+}
+
+function changeHoroscopeText(clickedCalendarMonthElement) {
+    const horoscopeData = getGlobalHoroscopeData();
+    document.getElementById('detail-horoscope-text').innerHTML = horoscopeData[clickedCalendarMonthElement.id];
+}
+
+function removeHighlightingClassesOfCalendar() {
+    const calendarItems = getCalendarItems();
+    calendarItems.forEach(removeColorClassFromItem);
+}
+
+function removeColorClassFromItem(element) {
+    element.classList.remove('bg-act-pink');
+    element.classList.remove('text-white');
+}
+
+function addHighlightingClassesToCalendarItem(element) {
+    element.classList.add('bg-act-pink');
+    element.classList.add('text-white');
+}
+
+function getCalendarItems() {
+    const calendarItems = [];
+    for (let index = 0; index < 12; index++) {
+        calendarItems.push(document.getElementById(index));
+    }
+    return calendarItems;
 }
 
 // INDEX PAGE
@@ -742,6 +820,27 @@ function registerIndexPageClickhandler() {
 
 // Refactored Helper Functions
 
+function getCurrentMonth() {
+    const today = new Date();
+    return today.getMonth();
+}
+
+function getTextOfMonth(monthIndex) {
+    const months = [
+        'Januar',
+        'Februar',
+        'März',
+        'April',
+        'Mai',
+        'Juni',
+        'Juli',
+        'August',
+        'September',
+        'Oktober',
+        'November',
+        'Dezember'];
+    return months[monthIndex];
+}
 function setGlobalMatches(matches) {
     globalMatches = matches;
 }
@@ -749,6 +848,15 @@ function setGlobalMatches(matches) {
 function getGlobalMatches() {
     return globalMatches;
 }
+
+function setGlobalHoroscopeData(horoscopeData) {
+    globalHoroscopeData = horoscopeData;
+}
+
+function getGlobalHoroscopeData() {
+    return globalHoroscopeData;
+}
+
 
 function sortMatchesByResultDesc(matches) {
     matches.sort((matchA, matchB) => matchB.result - matchA.result);
