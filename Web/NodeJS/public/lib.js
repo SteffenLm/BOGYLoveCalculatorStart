@@ -264,7 +264,7 @@ function renderHeader(site) {
                         <rect width="266" height="61" rx="30.5" stroke="none" />
                         <rect x="2.5" y="2.5" width="261" height="56" rx="28" fill="none" />
                     </g>
-                    <text transform="translate(1521 114)" font-size="32" font-family="SegoeUI, Segoe UI">
+                    <text transform="translate(1521 114)" font-size="32" font-family="Quasimoda Regular">
                         <tspan x="0" y="0">${loggedInUser.name.toUpperCase()}</tspan>
                     </text>
                     <g transform="translate(1467 86.542)">
