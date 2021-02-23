@@ -38,8 +38,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         horoscope_text TEXT NOT NULL
     );`;
-    db.run(horoscopeTableQuery);
-    const horoscopeTableData = `INSERT INTO horoscope (horoscope_text)
+    db.run(horoscopeTableQuery, (res, err) => {
+        const horoscopeTableData = `INSERT INTO horoscope (horoscope_text)
     VALUES 
     ('In Ihren Beziehungen dürfte heute einiges los sein. Vielleicht haben Sie eine festgefahrene Situation zu bereinigen.'),
     ('Eventuell eskalieren Unstimmigkeiten auch in einem Streit. Falls Sie bereits reinen Tisch gemacht haben, besteht die Chance, einen tollen und lebhaften Tag zu zweit zu verbringen.'),
@@ -140,7 +140,8 @@ const db = new sqlite3.Database(dbPath, (err) => {
     ('Leere schafft Platz für Gedanken und Kreativität. Also lassen Sie sich nicht ablenken, bleiben Sie bei sich, um zu klären: Was kann ich, was macht mich aus, was will ich?'),
     ('In der Ruhe liegt die Kraft: Das sollten Sie sich an den Spiegel pinnen.'),
     ('Gib deiner Größe Raum! Uranus mischt ebenfalls mit, sorgt für Abwechslung und ermutigt Sie, neue Wege zu gehen – und etwas plakativer aufzutreten.');`;
-    db.run(horoscopeTableData);
+        db.run(horoscopeTableData);
+    });
 });
 
 app.use(express.json());
@@ -150,10 +151,10 @@ app.post('/api/register', function (req, res, next) {
     const username = req.body.username;
     const mail = req.body.mail;
     const isValidMail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(mail);
-    if (name != null && name != '' && name.length >= 3
-        && password != null && password != '' && password.length >= 8
-        && username != null && username != '' && username.length >= 3
-        && isValidMail) {
+    if (name != null && name != '' && name.length >= 3 &&
+        password != null && password != '' && password.length >= 8 &&
+        username != null && username != '' && username.length >= 3 &&
+        isValidMail) {
         //check if mail is already used
         const countQuery = `SELECT COUNT(*) AS NoOfMails
         FROM user
@@ -222,7 +223,9 @@ app.post('/api/match', function (req, res, next) {
         db.run(insertMatchQuery, [userid, req.body.firstname, req.body.secondname, req.body.result], function (err) {
             if (err) {
                 if (err.errno === 19) {
-                    res.status(400).send({ msg: 'Match already saved!' });
+                    res.status(400).send({
+                        msg: 'Match already saved!'
+                    });
                 } else {
                     res.status(400).end();
                 }
@@ -296,7 +299,9 @@ app.get('/api/horoscope', function (req, res, next) {
         FROM horoscope
         WHERE id IN (?,?,?,?,?,?,?,?,?,?,?,?)`;
         db.all(selectMatchQuery, getTwelveRandomUniqueIntForHoroscope(), function (err, rows) {
-            res.status(200).send(rows.map((element) => { return element.horoscope_text }));
+            res.status(200).send(rows.map((element) => {
+                return element.horoscope_text
+            }));
         });
     } else {
         res.status(401).end();
